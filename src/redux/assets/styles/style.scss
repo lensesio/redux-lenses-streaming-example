@@ -1,0 +1,37 @@
+@import "bulma/sass/utilities/initial-variables";
+@import 'bulma/bulma';
+
+html {
+    padding: 20px;
+    background-color: #495469;
+}
+
+.app {
+  max-width: 1280px !important;
+}
+
+.panel {
+    background-color: white;
+}
+
+.ws-subscribe {
+  margin-bottom: 0 !important;
+}
+
+.ws-message-list {
+  margin-bottom: 0 !important;
+}
+
+.message-row {
+  border-bottom: 1px dotted #495469;
+}
+
+.message-list {
+  height: 370px;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
