@@ -7,6 +7,7 @@ import rootReducer from '../reducers/';
 function configureStore() {
   // We are connecting when the middleware is setup
   // Alternatively we can dispatch the CONNECT action with the same options
+  // For a full list of supported options, see documentation
   const options = {
     host: INITIAL_STATE.host,
     clientId: INITIAL_STATE.clientId,
