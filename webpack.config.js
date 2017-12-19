@@ -46,7 +46,7 @@ const config = {
   watch: !isProd,
   devtool: isProd ? 'cheap-source-map' : 'cheap-module-source-map',
   entry: {
-    'lenses-ws-redux': './src/redux/index.js',
+    'redux-lenses-streaming-example': './src/redux/index.js',
   },
   output: {
     filename: isProd ? '[name].[hash].min.js' : '[name].[hash].js',
