@@ -51,7 +51,7 @@ const config = {
   output: {
     filename: isProd ? '[name].[hash].min.js' : '[name].[hash].js',
     path: path.resolve(__dirname, 'lenses'),
-    publicPath: '/lenses/',
+    publicPath: './',
   },
 
   module: {
