@@ -129,10 +129,8 @@ const mapStateToProps = state => ({
   connection: state.lenses.connection,
 });
 
-const mapDispatchToProps = dispatch => ({
-  publish: (payload) => {
-    dispatch(KafkaActions.publish(payload));
-  },
-});
+const mapDispatchToProps = {
+  ...KafkaActions,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publish);

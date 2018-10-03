@@ -3,6 +3,7 @@ import { createLensesMiddleware } from 'redux-lenses-streaming';
 import { createLogger } from 'redux-logger';
 import { INITIAL_STATE } from '../reducers/sessionReducer'
 import rootReducer from '../reducers/';
+import { Type } from '../actions';
 
 function configureStore() {
   // We are connecting when the middleware is setup
@@ -15,8 +16,10 @@ function configureStore() {
 
   const lensesWsMiddleware = createLensesMiddleware(options);
   const logger = createLogger({ 
-    collapsed: true 
+    collapsed: true,
+    predicate: (getState, action) => action.type !== Type.UPDATE_PASSWORD
   });
+
   const middleware = [logger, lensesWsMiddleware];
 
   const store = createStore(

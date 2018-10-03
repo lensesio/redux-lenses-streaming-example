@@ -121,17 +121,10 @@ const mapStateToProps = state => ({
   messages: state.session.messages,
 });
 
-const mapDispatchToProps = dispatch => ({
-  subscribe: (message) => {
-    dispatch(KafkaActions.subscribe(message));
-  },
-  unsubscribe: (message) => {
-    dispatch(KafkaActions.unsubscribe(message));
-  },
-  clearMessages: (message) => {
-    dispatch(Action.clearMessages());
-  },
-});
+const mapDispatchToProps = {
+  ...KafkaActions,
+  ...Action,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Subscribe);
 
