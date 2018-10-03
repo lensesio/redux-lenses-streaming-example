@@ -9,10 +9,7 @@ import MessageList from '../components/MessageList';
 
 class MainContainer extends React.Component {
   render() {
-    const { messages, commitMessage } = this.props;
-    const showMessageList = messages.length ? (
-      <MessageList messages={messages} onCommitMessage={commitMessage} />
-    ) : <div />;
+    const { messages, commit } = this.props;
 
     return (
       <div className="container app">
@@ -27,7 +24,9 @@ class MainContainer extends React.Component {
         <div className="columns">
           <div className="column">
             <Subscribe />
-            {showMessageList}
+            {messages.length ? (
+              <MessageList messages={messages} onCommitMessage={commit} />
+            ) : null}
           </div>
         </div>
       </div>
@@ -52,10 +51,8 @@ const mapStateToProps = state => ({
   messages: state.session.messages,
 });
 
-const mapDispatchToProps = dispatch => ({
-  commitMessage: (message) => {
-    dispatch(KafkaActions.commit(message));
-  },
-});
+const mapDispatchToProps = {
+  ...KafkaActions,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);

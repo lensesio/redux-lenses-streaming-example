@@ -218,28 +218,9 @@ const mapStateToProps = state => ({
   heartbeatCount: state.session.heartbeatCount,
 });
 
-const mapDispatchToProps = dispatch => ({
-  connect: (option) => {
-    dispatch(KafkaActions.connect(option));
-  },
-  disconnect: () => {
-    dispatch(KafkaActions.disconnect());
-  },
-  login: (option) => {
-    dispatch(KafkaActions.login(option));
-  },
-  updateHost: (payload) => {
-    dispatch(Action.updateHost(payload));
-  },
-  updateClientId: (payload) => {
-    dispatch(Action.updateClientId(payload));
-  },
-  updateUser: (payload) => {
-    dispatch(Action.updateUser(payload));
-  },
-  updatePassword: (payload) => {
-    dispatch(Action.updatePassword(payload));
-  },
-});
+const mapDispatchToProps = {
+  ...KafkaActions,
+  ...Action,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Connect);

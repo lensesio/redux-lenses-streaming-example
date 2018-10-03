@@ -1,13 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
-const precss = require('precss');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin;
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const NODE_MODULES = path.resolve(__dirname, 'node_modules');
 const ENV = process.env.NODE_ENV || 'development';
@@ -24,34 +22,41 @@ let plugins = [
     filename: './index.html',
     excludeChunks: [],
   }),
-  new ExtractTextPlugin('assets/style.css'),
+  new MiniCssExtractPlugin({
+    filename: isProd ? 'assets/css/[name].[hash].css' : 'assets/css/[name].css',
+    chunkFilename: isProd ? 'assets/css/[id].[hash].css' : 'assets/css/[id].css',
+  }),
   new CopyWebpackPlugin([{ from: 'src/assets/images', to: 'images' }])
 ];
 
 if (isProd) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compressor: {
-      pure_getters: true,
-      unsafe: true,
-      unsafe_comps: true,
-      warnings: false
-    }
-  }));
+  plugins.push(
+    new CleanWebpackPlugin(['dist']),
+    new OptimizeCssAssetsPlugin({
+      cssProcessorOptions: {
+        discardComments: {
+          removeAll: true
+        }
+      }
+    })
+  )
 } else {
-  plugins.push(new HotModuleReplacementPlugin());
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  )
 }
 
-
 const config = {
+  mode: !isProd ? 'development' : 'production',
   watch: !isProd,
-  devtool: isProd ? 'cheap-source-map' : 'cheap-module-source-map',
+  devtool: !isProd ? 'source-map' : false,
   entry: {
     'redux-lenses-streaming-example': './src/redux/index.js',
   },
   output: {
-    filename: isProd ? '[name].[hash].min.js' : '[name].[hash].js',
-    path: path.resolve(__dirname, 'lenses'),
-    publicPath: './',
+    filename: isProd ? "js/[name].[chunkhash].js" : "js/[name].[hash].js",
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '',
   },
 
   module: {
@@ -64,32 +69,28 @@ const config = {
         loader: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
-        })
+        test: /\.s[ac]ss$/,
+        use: [{
+          loader: isProd ? MiniCssExtractPlugin.loader : "style-loader"
+        },
+        {
+          loader: "css-loader",
+        },
+        {
+          loader: "sass-loader",
+          options: {
+            includePaths: ["src"]
+          }
+        }]
       },
       {
-        test: /\.s[ac]ss$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: !isProd,
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: !isProd,
-              includePaths: [
-                NODE_MODULES,
-              ],
-            },
-          },
-        ],
+        test: /\.css$/,
+        use: [{
+          loader: isProd ? MiniCssExtractPlugin.loader : "style-loader"
+        },
+        {
+          loader: "css-loader"
+        }]
       },
     ],
   },
@@ -101,14 +102,15 @@ const config = {
   },
   plugins,
   devServer: {
-    host: 'localhost',
+    host: "localhost",
     port: 8000,
-    contentBase: path.join(__dirname, 'lenses'),
-    compress: true,
+    contentBase: path.resolve(__dirname, "dist"),
     historyApiFallback: true,
+    hot: !isProd,
     inline: true,
     https: false,
-    noInfo: true,
+    noInfo: false,
+    progress: true
   }
 };
 
