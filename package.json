@@ -4,7 +4,7 @@
   "description": "Example implementation of the redux-lenses-streaming library",
   "main": "index.js",
   "scripts": {
-    "start-dev": "node ./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node ./node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.config.js --progress",
+    "start": "node ./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node ./node_modules/webpack-dev-server/bin/webpack-dev-server --config webpack.config.js --progress",
     "build-dev": "node ./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node ./node_modules/webpack/bin/webpack --config webpack.config.js --progress",
     "build-prod": "node ./node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node ./node_modules/cross-env/dist/bin/cross-env.js BABEL_ENV=production node ./node_modules/webpack/bin/webpack --config webpack.config.js",
     "postinstall": "npm run build-prod",
