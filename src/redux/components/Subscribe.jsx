@@ -17,7 +17,16 @@ class Subscribe extends React.Component {
 
     this.state = {
       sqls: '',
+      maxMessages: 15000
     };
+  }
+
+  componentDidUpdate() {
+    const { subscriptions, messages } = this.props;
+    const { maxMessages } = this.state;
+    if (messages && messages.length > maxMessages) {
+      subscriptions.map(this.onUnsubscribe);
+    }
   }
 
   onSqlsChange(event) {
@@ -127,4 +136,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Subscribe);
-
