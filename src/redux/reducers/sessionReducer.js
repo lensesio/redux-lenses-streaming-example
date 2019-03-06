@@ -8,7 +8,8 @@ export const INITIAL_STATE = {
   host: '',
   clientId: '',
   user: '',
-  password: ''
+  password: '',
+  message: {}
 };
 
 const onUpdateHost = (state, action) => Object.assign({}, state, { host: action.payload });
@@ -16,6 +17,7 @@ const onUpdateClientId = (state, action) => Object.assign({}, state, { clientId:
 const onUpdateUser = (state, action) => Object.assign({}, state, { user: action.payload });
 const onUpdatePassword = (state, action) => Object.assign({}, state, { password: action.payload });
 const onClearMessages = (state, action) => Object.assign({}, state, { messages: [] });
+const onShowRowDetails = (state, action) => Object.assign({}, state, { message: action.payload });
 
 const onConnectSuccess = state => Object.assign({}, state,
   { heartbeatCount: 0 });
@@ -35,6 +37,7 @@ const ACTION_HANDLERS = {
   [Type.UPDATE_USER]: onUpdateUser,
   [Type.UPDATE_PASSWORD]: onUpdatePassword,
   [Type.CLEAR_MESSAGES]: onClearMessages,
+  [Type.SHOW_ROW_DETAILS]: onShowRowDetails,
   [KafkaType.KAFKA_HEARTBEAT]: onKafkaHeartbeat,
   [KafkaType.KAFKA_MESSAGE]: onKafkaMessage,
   [KafkaType.CONNECT_SUCCESS]: onConnectSuccess,

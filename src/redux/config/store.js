@@ -15,7 +15,7 @@ function configureStore() {
   };
 
   const lensesWsMiddleware = createLensesMiddleware(options);
-  const logger = createLogger({ 
+  const logger = createLogger({
     collapsed: true,
     predicate: (getState, action) => action.type !== Type.UPDATE_PASSWORD
   });

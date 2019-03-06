@@ -111,6 +111,7 @@ class Connect extends React.Component {
               value={password}
               name="password"
               onChange={this.onInputChange}
+              autoComplete="off"
             />
             <span className="icon is-small is-left">
               <i className="fa fa-lock" />

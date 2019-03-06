@@ -23,6 +23,26 @@ html {
 
 .message-row {
   border-bottom: 1px dotted #495469;
+  padding: 0 10px;
+  width: inherit;
+
+  &:hover, .selected {
+    cursor: pointer;
+    background-color: whitesmoke;
+  }
+
+  .column {
+    padding: 5px 10px;
+    font-size: 0.7em;
+    div {
+      font-size: 0.8em;
+      color: #ccc;
+      padding: 0;
+    }
+    .key {
+      font-weight: bold;
+    }
+  }
 }
 
 .message-list {
@@ -33,4 +53,30 @@ html {
   margin: auto;
   width: 50%;
   padding: 10px;
+}
+
+.list-item-details {
+  margin: 10px 0;
+  ul {
+    margin: 0;
+    li {
+      width: 25%;
+      display: inline-block;
+      list-style: none;
+    }
+  }
+  .button {
+    margin-right: 10px;
+  }
+}
+
+.autosizer-bulma-fix {
+  height: auto !important;
+
+  .ReactVirtualized__Grid, .ReactVirtualized__List {
+    overflow-x: auto;
+    .ReactVirtualized__Grid__innerScrollContainer {
+      overflow-x: auto;
+    }
+  }
 }
