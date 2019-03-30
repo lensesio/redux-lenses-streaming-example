@@ -1,21 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import { List, AutoSizer } from "react-virtualized";
 import { Action } from "../actions";
 import ListItemDetails from "./ListItemDetails";
+import MessageListItem from "./MessageListItem";
 
 class MessageList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onShowRowDetails = this.onShowRowDetails.bind(this);
-    this.rowRenderer = this.rowRenderer.bind(this);
-
-    this.state = {
-      message: {}
-    };
+  state = {
+    message: {}
   }
 
   componentDidUpdate() {
@@ -31,18 +24,13 @@ class MessageList extends React.Component {
   rowRenderer = messages => ({
     key, // Unique key within array of rows
     index, // Index of row within collection
-    isScrolling, // The List is currently being scrolled
-    isVisible, // This row is visible within the List (eg it is not an overscanned row)
     style // Style object to be applied to row (to position it)
   }) => {
-    let arr = [],
-      keys = [];
-    Object.keys(JSON.parse(messages[index].key)).forEach(function(k) {
-      keys.push({ label: k, value: JSON.parse(messages[index].key)[k] });
-    });
-    Object.keys(JSON.parse(messages[index].value)).forEach(function(k) {
-      arr.push({ label: k, value: JSON.parse(messages[index].value)[k] });
-    });
+    const keys = Object.keys(JSON.parse(messages[index].key))
+      .map((k) => ({ label: k, value: JSON.parse(messages[index].key)[k] }));
+    const arr = Object.keys(JSON.parse(messages[index].value))
+      .map((k) => ({ label: k, value: JSON.parse(messages[index].value)[k] }));
+
     return (
       <div
         key={key}
@@ -75,7 +63,6 @@ class MessageList extends React.Component {
 
   render() {
     const { messages, onCommitMessage } = this.props;
-    const { onShowRowDetails } = this;
     const { message } = this.state;
 
     return (
@@ -83,16 +70,14 @@ class MessageList extends React.Component {
         <ListItemDetails
           message={message}
           onCommitMessage={onCommitMessage}
-          onShowRowDetails={onShowRowDetails}
+          onShowRowDetails={this.onShowRowDetails}
         />
         <nav className="panel">
           <div className="panel-block">
             <AutoSizer className="autosizer-bulma-fix">
-              {({ height, width, disableHeight = true }) => (
+              {({ width }) => (
                 <List
-                  ref={list => {
-                    this.list = list;
-                  }}
+                  ref={list => (this.list = list)}
                   width={width}
                   height={290}
                   rowCount={messages.length}
@@ -103,17 +88,6 @@ class MessageList extends React.Component {
             </AutoSizer>
           </div>
         </nav>
-      </div>
-    );
-  }
-}
-
-class MessageListItem extends React.Component {
-  render() {
-    return (
-      <div className="column is-2">
-        <div>{this.props.label}</div>
-        {this.props.value}
       </div>
     );
   }

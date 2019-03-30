@@ -8,37 +8,29 @@ const ListItemDetailsRow = ({ label, value }) => (
 );
 
 class ListItemDetails extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.commitMessage = this.commitMessage.bind(this);
-    this.clearSelectedItem = this.clearSelectedItem.bind(this);
+  commitMessage = (message) => {
+    if (message) {
+      this.props.onCommitMessage(message);
+    }
   }
 
-  commitMessage(message) {
-    return () => {
-      if (message) {
-        this.props.onCommitMessage(message);
-      }
-    };
-  }
-
-  clearSelectedItem() {
+  clearSelectedItem = () => {
     this.props.onShowRowDetails({});
   }
 
   render() {
-    let arr = [];
-    const { message, onShowRowDetails } = this.props;
+    const { message } = this.props;
     const { value } = message;
+    let arr = [];
     if (value) {
       Object.keys(JSON.parse(value)).forEach(function(k) {
         arr.push({ label: k, value: JSON.parse(value)[k] });
       });
     }
+
     return (
       <div>
-        {arr.length > 0 ? (
+        {arr.length && (
           <div className="notification content list-item-details">
             <ul>
               {arr.map(item => (
@@ -62,8 +54,6 @@ class ListItemDetails extends React.Component {
               Hide details
             </button>
           </div>
-        ) : (
-          ""
         )}
       </div>
     );

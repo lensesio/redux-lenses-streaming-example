@@ -2,54 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import AuthPanel from './AuthPanel';
 import { Action } from '../actions';
 import { Actions as KafkaActions } from 'redux-lenses-streaming';
 
 class Connect extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onConnectClick = this.onConnectClick.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onLogin = this.onLogin.bind(this);
-
-    this.state = {
-      authRequired: false,
-    }
+  state = {
+    authRequired: false
   }
 
-  onConnectClick() {
+  onConnectClick = () => {
     const { connection } = this.props;
     const { authRequired } = this.state;
 
     if (connection) {
       this.props.disconnect();
     } else if (authRequired) {
-      const options = {
-        host: this.props.host,
-        clientId: this.props.clientId,
-        user: this.props.user,
-        password: this.props.password,
-      };
+      const { host, clientId, user, password } = this.props;
+      const options = { host, clientId, user, password };
       this.props.connect(options);
     } else {
-      const options = {
-        host: this.props.host,
-        clientId: this.props.clientId,
-      };
+      const { host, clientId } = this.props;
+      const options = { host, clientId };
       this.props.connect(options);
     }
   }
 
-  onLogin() {
-    const options = {
-      user: this.props.user,
-      password: this.props.password,
-    };
+  onLogin = () => {
+    const { user, password } = this.props;
+    const options = { user, password };
     this.props.login(options);
   }
 
-  onInputChange(event) {
+  onInputChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -78,54 +63,17 @@ class Connect extends React.Component {
   render() {
     const { connection, heartbeatCount, host, clientId, user, password } = this.props;
     const { authRequired } = this.state;
-
     const btnLabel = connection ? 'Disconnect' : 'Connect';
     const btnStyle = classnames('button is-fullwidth', {
       'is-primary': !connection,
       'is-danger': connection,
     });
 
-    const authPanel = authRequired ? (
-      <div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
-            <input
-              className="input is-small"
-              type="text"
-              placeholder="User"
-              value={user}
-              name="user"
-              onChange={this.onInputChange}
-            />
-            <span className="icon is-small is-left">
-              <i className="fa fa-user" />
-            </span>
-          </p>
-        </div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
-            <input
-              className="input is-small"
-              type="password"
-              placeholder="Password for Authentication"
-              value={password}
-              name="password"
-              onChange={this.onInputChange}
-              autoComplete="off"
-            />
-            <span className="icon is-small is-left">
-              <i className="fa fa-lock" />
-            </span>
-          </p>
-        </div>
-      </div>
-    ) : (<div />)
-
     return (
       <nav className="panel">
         <p className="panel-heading">
           Connection Details
-                </p>
+        </p>
         <div className="panel-block">
           <p className="control has-icons-left">
             <input
@@ -181,7 +129,10 @@ class Connect extends React.Component {
               </button>
           </div>
         </div>
-        {authPanel}
+        {
+          authRequired &&
+            <AuthPanel user={user} password={password} onInputChange={this.onInputChange} />
+        }
         <div className="panel-block">
           <button
             onClick={this.onConnectClick}

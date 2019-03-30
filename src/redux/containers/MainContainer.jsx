@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Actions as KafkaActions } from 'redux-lenses-streaming';
-
 import Connect from '../components/Connect';
 import Publish from '../components/Publish';
 import Subscribe from '../components/Subscribe';
@@ -24,9 +23,10 @@ class MainContainer extends React.Component {
         <div className="columns">
           <div className="column">
             <Subscribe />
-            {messages.length ? (
-              <MessageList messages={messages} onCommitMessage={commit} />
-            ) : null}
+            {
+              messages.length &&
+                <MessageList messages={messages} onCommitMessage={commit} />
+            }
           </div>
         </div>
       </div>

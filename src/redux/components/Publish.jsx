@@ -5,23 +5,14 @@ import classnames from 'classnames';
 import { Actions as KafkaActions } from 'redux-lenses-streaming';
 
 class Publish extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onPublishClick = this.onPublishClick.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-
-    this.state = {
-      selectedTopic: '',
-      pubKey: '',
-      pubValue: '',
-    };
+  state = {
+    selectedTopic: '',
+    pubKey: '',
+    pubValue: ''
   }
 
-  onPublishClick() {
-    const { pubKey, pubValue, selectedTopic }
-      = this.state;
-
+  onPublishClick = () => {
+    const { pubKey, pubValue, selectedTopic } = this.state;
     const request = {
       topic: selectedTopic,
       key: pubKey,
@@ -31,7 +22,7 @@ class Publish extends React.Component {
     this.props.publish(request);
   }
 
-  onInputChange(event) {
+  onInputChange = (event) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -49,16 +40,14 @@ class Publish extends React.Component {
 
   render() {
     const { connection } = this.props;
-    const { pubKey, pubValue, selectedTopic }
-      = this.state;
-
+    const { pubKey, pubValue, selectedTopic } = this.state;
     const btnStyle = classnames('button is-fullwidth is-success');
 
     return (
       <nav className="panel">
         <p className="panel-heading">
           Publish Message
-                </p>
+        </p>
         <div className="panel-block">
           <p className="control has-icons-left">
             <input

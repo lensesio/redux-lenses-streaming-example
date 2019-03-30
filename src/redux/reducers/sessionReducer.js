@@ -12,22 +12,18 @@ export const INITIAL_STATE = {
   message: {}
 };
 
-const onUpdateHost = (state, action) => Object.assign({}, state, { host: action.payload });
-const onUpdateClientId = (state, action) => Object.assign({}, state, { clientId: action.payload });
-const onUpdateUser = (state, action) => Object.assign({}, state, { user: action.payload });
-const onUpdatePassword = (state, action) => Object.assign({}, state, { password: action.payload });
-const onClearMessages = (state, action) => Object.assign({}, state, { messages: [] });
-const onShowRowDetails = (state, action) => Object.assign({}, state, { message: action.payload });
-
-const onConnectSuccess = state => Object.assign({}, state,
-  { heartbeatCount: 0 });
-const onKafkaHeartbeat = state => Object.assign({}, state,
-  { heartbeatCount: state.heartbeatCount + 1 });
+const onUpdateHost = (state, action) => ({ ...state, host: action.payload });
+const onUpdateClientId = (state, action) => ({ ...state, clientId: action.payload });
+const onUpdateUser = (state, action) => ({ ...state, user: action.payload });
+const onUpdatePassword = (state, action) => ({ ...state, password: action.payload });
+const onClearMessages = (state) => ({ ...state, messages: [] });
+const onShowRowDetails = (state, action) => ({ ...state, message: action.payload });
+const onConnectSuccess = state => ({ ...state, heartbeatCount: 0 });
+const onKafkaHeartbeat = state => ({ ...state, heartbeatCount: state.heartbeatCount + 1 });
 const onKafkaMessage = (state, action) => {
-  let messages = (action.payload && action.payload.content) || [];
-  //messages = messages.map(message => message.value);
-  return Object.assign({}, state,
-    { messages: state.messages.concat(messages) });
+  const messages = (action.payload && action.payload.content) || [];
+
+  return { ...state, messages: state.messages.concat(messages) };
 };
 
 // map our types to our handlers
