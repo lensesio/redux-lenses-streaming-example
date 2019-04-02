@@ -4,7 +4,7 @@ Example implementation of the [redux-lenses-streaming](https://github.com/landoo
 
 ## Setup
 
-Get and run [Lenses-For-Developers](http://www.landoop.com/docs/lenses/developers) - a docker container that packs Kafka, ZK, Schema Registry, Kafka Connect, 25+ Kafka Connectors, Lenses for Apache Kafka, synthetic data generators and then 
+Get and run [Lenses-For-Developers](https://docs.lenses.io/dev/lenses-box/) - a docker container that packs Kafka, ZK, Schema Registry, Kafka Connect, 25+ Kafka Connectors, Lenses for Apache Kafka, synthetic data generators and then 
 
 Clone and run
 
