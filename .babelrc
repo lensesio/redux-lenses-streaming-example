@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": [
@@ -11,13 +11,9 @@
         "debug": true
       }
     ],
-    "react"
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    [
-      "transform-react-jsx"
-    ]
+    "@babel/plugin-proposal-class-properties",
   ]
 }
