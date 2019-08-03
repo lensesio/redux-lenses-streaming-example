@@ -4,6 +4,7 @@ import { createLogger } from 'redux-logger';
 import { INITIAL_STATE } from '../reducers/sessionReducer'
 import rootReducer from '../reducers/';
 import { Type } from '../actions';
+import autoUnsubscribeMiddleware from '../util/autoUnsubscribeMiddleware';
 
 function configureStore() {
   // We are connecting when the middleware is setup
@@ -20,7 +21,7 @@ function configureStore() {
     predicate: (getState, action) => action.type !== Type.UPDATE_PASSWORD
   });
 
-  const middleware = [logger, lensesWsMiddleware];
+  const middleware = [logger, lensesWsMiddleware, autoUnsubscribeMiddleware];
 
   const store = createStore(
     rootReducer,
