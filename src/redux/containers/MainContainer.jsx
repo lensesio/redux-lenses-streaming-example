@@ -6,8 +6,8 @@ import Connect from '../components/Connect';
 import Publish from '../components/Publish';
 import Subscribe from '../components/Subscribe';
 import MessageList from '../components/MessageList';
-import {useTab} from '../components/Tabs';
 import Chart from '../components/Chart';
+import useTab from '../util/useTab';
 
 const MainContainer = ({messages, commit}) => {
   const [activeTab, {isActiveTab, setActiveTab}] = useTab(['list', 'visualization']);

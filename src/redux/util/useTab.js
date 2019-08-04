@@ -1,11 +1,13 @@
 import React from 'react';
 
-export const useTab = (tabs=[]) => {
+const useTab = (tabs=[]) => {
   if (tabs.length === 0) {
     throw new Error('Tabs list cannot be empty');
   }
 
-  const [activeTab, setState] = React.useState('list');
+  const firstTab = tabs[0];
+
+  const [activeTab, setState] = React.useState(firstTab);
 
   const setActiveTab = tab => () => {
     if (tabs.includes(tab)) {
@@ -17,3 +19,5 @@ export const useTab = (tabs=[]) => {
 
   return [activeTab, {isActiveTab, setActiveTab}];
 };
+
+export default useTab;
