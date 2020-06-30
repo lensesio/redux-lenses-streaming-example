@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "jsx": "react",
+        "esModuleInterop": true,
+        "target": "es2019",
+        "skipLibCheck": true,
+        "module": "ESNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+        "lib": [
+            "es2017",
+            "es7",
+            "es6",
+            "dom",
+            "dom.iterable"
+        ],
+        "declaration": false,
+        "outDir": "dist",
+        "strict": true,
+        "strictNullChecks": false,
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "include": [
+        "src/**/*",
+        "./typings"
+    ],
+    "exclude": [
+        "**/node_modules/*",
+        "**/dist/*",
+        "test"
+    ]
+}

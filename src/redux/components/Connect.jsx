@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { Action } from '../actions';
-import { Actions as KafkaActions } from 'redux-lenses-streaming';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import Button from "./Button";
+import { Action } from "../actions";
+import { Actions as KafkaActions } from "redux-lenses-streaming";
 
 class Connect extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Connect extends React.Component {
 
     this.state = {
       authRequired: false,
-    }
+    };
   }
 
   onConnectClick() {
@@ -51,23 +52,23 @@ class Connect extends React.Component {
 
   onInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     switch (name) {
-      case 'authRequired':
+      case "authRequired":
         this.setState({ authRequired: value });
         break;
-      case 'host':
+      case "host":
         this.props.updateHost(value);
         break;
-      case 'clientId':
+      case "clientId":
         this.props.updateClientId(value);
         break;
-      case 'user':
+      case "user":
         this.props.updateUser(value);
         break;
-      case 'password':
+      case "password":
         this.props.updatePassword(value);
         break;
       default:
@@ -76,13 +77,20 @@ class Connect extends React.Component {
   }
 
   render() {
-    const { connection, heartbeatCount, host, clientId, user, password } = this.props;
+    const {
+      connection,
+      heartbeatCount,
+      host,
+      clientId,
+      user,
+      password,
+    } = this.props;
     const { authRequired } = this.state;
 
-    const btnLabel = connection ? 'Disconnect' : 'Connect';
-    const btnStyle = classnames('button is-fullwidth', {
-      'is-primary': !connection,
-      'is-danger': connection,
+    const btnLabel = connection ? "Disconnect" : "Connect";
+    const btnStyle = classnames("button is-fullwidth", {
+      "is-primary": !connection,
+      "is-danger": connection,
     });
 
     const authPanel = authRequired ? (
@@ -119,13 +127,13 @@ class Connect extends React.Component {
           </p>
         </div>
       </div>
-    ) : (<div />)
+    ) : (
+      <div />
+    );
 
     return (
       <nav className="panel">
-        <p className="panel-heading">
-          Connection Details
-                </p>
+        <p className="panel-heading">Connection Details</p>
         <div className="panel-block">
           <p className="control has-icons-left">
             <input
@@ -164,31 +172,30 @@ class Connect extends React.Component {
         <div className="panel-block">
           <p className="control has-icons-left">
             <label className="checkbox">
-              <input name='authRequired'
+              <input
+                name="authRequired"
                 type="checkbox"
                 checked={authRequired}
-                onChange={this.onInputChange} />
+                onChange={this.onInputChange}
+              />
               Requires Authentication
             </label>
           </p>
           <div className="control">
-            <button
+            <Button
               onClick={this.onLogin}
               className="button is-small is-info is-pulled-right"
               disabled={!connection || !authRequired}
             >
               Login
-              </button>
+            </Button>
           </div>
         </div>
         {authPanel}
         <div className="panel-block">
-          <button
-            onClick={this.onConnectClick}
-            className={btnStyle}
-          >
+          <Button onClick={this.onConnectClick} className={btnStyle}>
             {btnLabel}
-          </button>
+          </Button>
         </div>
       </nav>
     );
@@ -210,7 +217,7 @@ Connect.propTypes = {
   login: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   connection: state.lenses.connection,
   host: state.session.host,
   user: state.session.user,

@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -26,12 +26,17 @@ let plugins = [
     filename: isProd ? 'assets/css/[name].[hash].css' : 'assets/css/[name].css',
     chunkFilename: isProd ? 'assets/css/[id].[hash].css' : 'assets/css/[id].css',
   }),
-  new CopyWebpackPlugin([{ from: 'src/assets/images', to: 'images' }])
+  new CopyWebpackPlugin({
+    patterns: [
+      { from: 'src/assets/images', to: 'images' }
+    ],
+  }),
 ];
 
 if (isProd) {
   plugins.push(
-    new CleanWebpackPlugin(['dist']),
+    new webpack.ProgressPlugin(),
+    new CleanWebpackPlugin(),
     new OptimizeCssAssetsPlugin({
       cssProcessorOptions: {
         discardComments: {
@@ -62,11 +67,10 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        include: [
-          path.resolve(__dirname, 'src'),
-        ],
+        test: /\.(ts|js)x?$/,
+        resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         loader: 'babel-loader',
+        exclude: /node_modules/
       },
       {
         test: /\.s[ac]ss$/,
@@ -79,7 +83,9 @@ const config = {
         {
           loader: "sass-loader",
           options: {
-            includePaths: ["src"]
+            sassOptions: {
+              includePaths: ["src"]
+            }
           }
         }]
       },
