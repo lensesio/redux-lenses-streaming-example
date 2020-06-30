@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { Actions as KafkaActions } from 'redux-lenses-streaming';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import Button from "./Button";
 
 class Publish extends React.Component {
   constructor(props) {
@@ -12,15 +12,14 @@ class Publish extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
 
     this.state = {
-      selectedTopic: '',
-      pubKey: '',
-      pubValue: '',
+      selectedTopic: "",
+      pubKey: "",
+      pubValue: "",
     };
   }
 
   onPublishClick() {
-    const { pubKey, pubValue, selectedTopic }
-      = this.state;
+    const { pubKey, pubValue, selectedTopic } = this.state;
 
     const request = {
       topic: selectedTopic,
@@ -37,9 +36,9 @@ class Publish extends React.Component {
     const name = target.name;
 
     switch (name) {
-      case 'selectedTopic':
-      case 'pubKey':
-      case 'pubValue':
+      case "selectedTopic":
+      case "pubKey":
+      case "pubValue":
         this.setState({ [name]: value });
         break;
       default:
@@ -48,17 +47,13 @@ class Publish extends React.Component {
   }
 
   render() {
-    const { connection } = this.props;
-    const { pubKey, pubValue, selectedTopic }
-      = this.state;
+    const { pubKey, pubValue, selectedTopic } = this.state;
 
-    const btnStyle = classnames('button is-fullwidth is-success');
+    const btnStyle = classnames("button is-fullwidth is-success");
 
     return (
       <nav className="panel">
-        <p className="panel-heading">
-          Publish Message
-                </p>
+        <p className="panel-heading">Publish Message</p>
         <div className="panel-block">
           <p className="control has-icons-left">
             <input
@@ -105,32 +100,28 @@ class Publish extends React.Component {
           </p>
         </div>
         <div className="panel-block">
-          <button
+          <Button
             onClick={this.onPublishClick}
             className={btnStyle}
             disabled={!connection}
           >
             Publish
-          </button>
+          </Button>
         </div>
       </nav>
     );
   }
 }
 
-Publish.defaultProps = {
-};
+Publish.defaultProps = {};
 
 Publish.propTypes = {
   publish: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  connection: state.lenses.connection,
+const mapStateToProps = (state) => ({
 });
 
-const mapDispatchToProps = {
-  ...KafkaActions,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publish);

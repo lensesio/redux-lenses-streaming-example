@@ -10,6 +10,8 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const NODE_MODULES = path.resolve(__dirname, 'node_modules');
 const ENV = process.env.NODE_ENV || 'development';
 const isProd = ENV === 'production';
+const LENSES_HTTP_URL = 'http://localhost:3030/';
+const LENSES_WS_URL = 'ws://localhost:3030/';
 
 console.log(`Building for ${ENV}`);
 
@@ -116,7 +118,26 @@ const config = {
     inline: true,
     https: false,
     noInfo: false,
-    progress: true
+    progress: true,
+    proxy: {
+      '/api': {
+        target: LENSES_HTTP_URL,
+        secure: false,
+        changeOrigin: true
+      },
+      '/api/ws': {
+        target: LENSES_WS_URL,
+        secure: false,
+        changeOrigin: true,
+        ws: true
+      }
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+    }
   }
 };
 

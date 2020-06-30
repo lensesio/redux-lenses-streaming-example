@@ -4,42 +4,13 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import Button from "./Button";
 import { Action } from "../actions";
-import { Actions as KafkaActions } from "redux-lenses-streaming";
 
 class Connect extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onConnectClick = this.onConnectClick.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.onLogin = this.onLogin.bind(this);
-
-    this.state = {
-      authRequired: false,
-    };
-  }
-
-  onConnectClick() {
-    const { connection } = this.props;
-    const { authRequired } = this.state;
-
-    if (connection) {
-      this.props.disconnect();
-    } else if (authRequired) {
-      const options = {
-        host: this.props.host,
-        clientId: this.props.clientId,
-        user: this.props.user,
-        password: this.props.password,
-      };
-      this.props.connect(options);
-    } else {
-      const options = {
-        host: this.props.host,
-        clientId: this.props.clientId,
-      };
-      this.props.connect(options);
-    }
   }
 
   onLogin() {
@@ -47,7 +18,6 @@ class Connect extends React.Component {
       user: this.props.user,
       password: this.props.password,
     };
-    this.props.login(options);
   }
 
   onInputChange(event) {
@@ -56,14 +26,8 @@ class Connect extends React.Component {
     const name = target.name;
 
     switch (name) {
-      case "authRequired":
-        this.setState({ authRequired: value });
-        break;
       case "host":
         this.props.updateHost(value);
-        break;
-      case "clientId":
-        this.props.updateClientId(value);
         break;
       case "user":
         this.props.updateUser(value);
@@ -77,59 +41,12 @@ class Connect extends React.Component {
   }
 
   render() {
-    const {
-      connection,
-      heartbeatCount,
-      host,
-      clientId,
-      user,
-      password,
-    } = this.props;
-    const { authRequired } = this.state;
+    const { connection, heartbeatCount, host, user, password } = this.props;
 
-    const btnLabel = connection ? "Disconnect" : "Connect";
     const btnStyle = classnames("button is-fullwidth", {
       "is-primary": !connection,
       "is-danger": connection,
     });
-
-    const authPanel = authRequired ? (
-      <div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
-            <input
-              className="input is-small"
-              type="text"
-              placeholder="User"
-              value={user}
-              name="user"
-              onChange={this.onInputChange}
-            />
-            <span className="icon is-small is-left">
-              <i className="fa fa-user" />
-            </span>
-          </p>
-        </div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
-            <input
-              className="input is-small"
-              type="password"
-              placeholder="Password for Authentication"
-              value={password}
-              name="password"
-              onChange={this.onInputChange}
-              autoComplete="off"
-            />
-            <span className="icon is-small is-left">
-              <i className="fa fa-lock" />
-            </span>
-          </p>
-        </div>
-      </div>
-    ) : (
-      <div />
-    );
 
     return (
       <nav className="panel">
@@ -151,50 +68,45 @@ class Connect extends React.Component {
         </div>
         <div className="panel-block">
           <p className="control has-icons-left">
-            <input
-              className="input is-small"
-              type="text"
-              placeholder="Client Id"
-              value={clientId}
-              name="clientId"
-              onChange={this.onInputChange}
-            />
-            <span className="icon is-small is-left">
-              <i className="fa fa-user" />
-            </span>
-          </p>
-        </div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
             Heartbeat Count: {heartbeatCount}
           </p>
         </div>
-        <div className="panel-block">
-          <p className="control has-icons-left">
-            <label className="checkbox">
+        <div>
+          <div className="panel-block">
+            <p className="control has-icons-left">
               <input
-                name="authRequired"
-                type="checkbox"
-                checked={authRequired}
+                className="input is-small"
+                type="text"
+                placeholder="User"
+                value={user}
+                name="user"
                 onChange={this.onInputChange}
               />
-              Requires Authentication
-            </label>
-          </p>
-          <div className="control">
-            <Button
-              onClick={this.onLogin}
-              className="button is-small is-info is-pulled-right"
-              disabled={!connection || !authRequired}
-            >
-              Login
-            </Button>
+              <span className="icon is-small is-left">
+                <i className="fa fa-user" />
+              </span>
+            </p>
+          </div>
+          <div className="panel-block">
+            <p className="control has-icons-left">
+              <input
+                className="input is-small"
+                type="password"
+                placeholder="Password for Authentication"
+                value={password}
+                name="password"
+                onChange={this.onInputChange}
+                autoComplete="off"
+              />
+              <span className="icon is-small is-left">
+                <i className="fa fa-lock" />
+              </span>
+            </p>
           </div>
         </div>
-        {authPanel}
         <div className="panel-block">
-          <Button onClick={this.onConnectClick} className={btnStyle}>
-            {btnLabel}
+          <Button onClick={this.onLogin} className={btnStyle}>
+            Login
           </Button>
         </div>
       </nav>
@@ -203,31 +115,20 @@ class Connect extends React.Component {
 }
 
 Connect.defaultProps = {
-  connection: null,
   heartbeatCount: 0,
 };
 
 Connect.propTypes = {
-  connection: PropTypes.shape({
-    publish: PropTypes.func.isRequired,
-  }),
   heartbeatCount: PropTypes.number,
-  connect: PropTypes.func.isRequired,
-  disconnect: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  connection: state.lenses.connection,
   host: state.session.host,
   user: state.session.user,
   password: state.session.password,
-  clientId: state.session.clientId,
-  heartbeatCount: state.session.heartbeatCount,
 });
 
 const mapDispatchToProps = {
-  ...KafkaActions,
   ...Action,
 };
 

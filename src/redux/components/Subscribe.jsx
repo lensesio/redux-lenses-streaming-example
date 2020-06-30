@@ -1,10 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { Actions as KafkaActions } from 'redux-lenses-streaming';
-import { Action } from '../actions';
-
+import React from "react";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import { Action } from "../actions";
+import Button from "./Button";
 
 class Subscribe extends React.Component {
   constructor(props) {
@@ -16,7 +14,7 @@ class Subscribe extends React.Component {
     this.onClearMessages = this.onClearMessages.bind(this);
 
     this.state = {
-      sqls: '',
+      sqls: "",
     };
   }
 
@@ -28,7 +26,6 @@ class Subscribe extends React.Component {
     const request = {
       sqls: this.state.sqls,
     };
-    this.props.subscribe(request);
   }
 
   onClearMessages() {
@@ -36,29 +33,13 @@ class Subscribe extends React.Component {
   }
 
   onUnsubscribe(topic) {
-    const request = {
-      topics: [topic],
-    };
-    this.props.unsubscribe(request);
   }
 
   render() {
-    const { messages, subscriptions, connection } = this.props;
+    const { messages } = this.props;
     const { sqls } = this.state;
 
-    const btnStyle = classnames('button is-small is-info');
-
-    const topics = subscriptions.map(subscription =>
-      (<button
-        onClick={this.onUnsubscribe.bind(this, subscription)}
-        key={subscription}
-        className="button is-danger is-outlined is-small is-pulled-right"
-      >
-        <span>{subscription}</span>
-        <span className="icon is-small">
-          <i className="fa fa-times" />
-        </span>
-      </button>));
+    const btnStyle = classnames("button is-small is-info");
 
     return (
       <nav className="ws-subscribe panel">
@@ -77,52 +58,40 @@ class Subscribe extends React.Component {
         </div>
         <div className="panel-block">
           <div className="control">
-            <button
-              style={{ marginRight: '10px' }}
+            <Button
+              style={{ marginRight: "10px" }}
               onClick={this.onSubscribe}
               className={btnStyle}
-              disabled={!connection || !this.state.sqls}
+              disabled={!this.state.sqls}
             >
               Subscribe
-        </button>
-            <button
+            </Button>
+            <Button
               onClick={this.onClearMessages}
               className="button is-small is-danger"
-              disabled={!connection}
             >
               Clear Messages
-        </button>
-          </div>
-          <div className="control">
-            {topics}
+            </Button>
           </div>
         </div>
         <div className="panel-block">
-          <div className="control">
-            Number of messages: {messages.length}
-          </div>
+          <div className="control">Number of messages: {messages.length}</div>
         </div>
       </nav>
     );
   }
 }
 
-Subscribe.defaultProps = {
-};
+Subscribe.defaultProps = {};
 
 Subscribe.propTypes = {
-  subscribe: PropTypes.func.isRequired,
-  unsubscribe: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  subscriptions: state.lenses.subscriptions,
-  connection: state.lenses.connection,
+const mapStateToProps = (state) => ({
   messages: state.session.messages,
 });
 
 const mapDispatchToProps = {
-  ...KafkaActions,
   ...Action,
 };
 

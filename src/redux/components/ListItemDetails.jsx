@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Button from "./Button";
 
 const ListItemDetailsRow = ({ label, value }) => (
   <li>
@@ -32,7 +33,7 @@ class ListItemDetails extends React.Component {
     const { message, onShowRowDetails } = this.props;
     const { value } = message;
     if (value) {
-      Object.keys(JSON.parse(value)).forEach(function(k) {
+      Object.keys(JSON.parse(value)).forEach(function (k) {
         arr.push({ label: k, value: JSON.parse(value)[k] });
       });
     }
@@ -41,7 +42,7 @@ class ListItemDetails extends React.Component {
         {arr.length > 0 ? (
           <div className="notification content list-item-details">
             <ul>
-              {arr.map(item => (
+              {arr.map((item) => (
                 <ListItemDetailsRow
                   key={item.label}
                   label={item.label}
@@ -49,18 +50,18 @@ class ListItemDetails extends React.Component {
                 />
               ))}
             </ul>
-            <button
+            <Button
               className="button is-info is-small"
               onClick={this.commitMessage(message)}
             >
               Commit
-            </button>
-            <button
+            </Button>
+            <Button
               className="button is-white is-small"
               onClick={this.clearSelectedItem}
             >
               Hide details
-            </button>
+            </Button>
           </div>
         ) : (
           ""
@@ -71,12 +72,12 @@ class ListItemDetails extends React.Component {
 }
 
 ListItemDetails.defaultProps = {
-  message: {}
+  message: {},
 };
 
 ListItemDetails.propTypes = {
   message: PropTypes.object,
-  onShowRowDetails: PropTypes.func.isRequired
+  onShowRowDetails: PropTypes.func.isRequired,
 };
 
 export default ListItemDetails;
