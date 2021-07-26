@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { Action } from "../actions";
+import { actions } from "../actions";
 import Button from "./Button";
 
 class Subscribe extends React.Component {
@@ -92,7 +92,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  ...Action,
+  ...actions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Subscribe);

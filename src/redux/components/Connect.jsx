@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import Button from "./Button";
-import { Action } from "../actions";
+import { actions } from "../actions";
 
 class Connect extends React.Component {
   constructor(props) {
@@ -129,7 +129,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  ...Action,
+  ...actions,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Connect);

@@ -30,7 +30,7 @@ class ListItemDetails extends React.Component {
 
   render() {
     let arr = [];
-    const { message, onShowRowDetails } = this.props;
+    const { message = {}, onShowRowDetails } = this.props;
     const { value } = message;
     if (value) {
       Object.keys(JSON.parse(value)).forEach(function (k) {
@@ -70,10 +70,6 @@ class ListItemDetails extends React.Component {
     );
   }
 }
-
-ListItemDetails.defaultProps = {
-  message: {},
-};
 
 ListItemDetails.propTypes = {
   message: PropTypes.object,
