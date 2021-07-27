@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { List, AutoSizer } from "react-virtualized";
-import { Action } from "../actions";
+import { actions } from "../actions";
 import ListItemDetails from "./ListItemDetails";
 
 class MessageList extends React.Component {
@@ -13,12 +13,12 @@ class MessageList extends React.Component {
     this.rowRenderer = this.rowRenderer.bind(this);
 
     this.state = {
-      message: {}
+      message: undefined
     };
   }
 
   componentDidUpdate() {
-    if (Object.keys(this.state.message).length === 0) {
+    if (!this.state.message) {
       this.list.scrollToRow(this.props.messages.length);
     }
   }
@@ -121,17 +121,17 @@ class MessageListItem extends React.Component {
 MessageList.defaultProps = {};
 
 MessageList.propTypes = {
-  onCommitMessage: PropTypes.func,
+  onCommitMessage: PropTypes.func.isRequired,
+  messages: PropTypes.array.isRequired,
   message: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   message: state.session.message,
-  messages: state.session.messages
 });
 
 const mapDispatchToProps = {
-  ...Action
+  ...actions
 };
 
 export default connect(

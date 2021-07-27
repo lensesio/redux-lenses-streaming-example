@@ -2,8 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
@@ -28,11 +28,7 @@ let plugins = [
     filename: isProd ? 'assets/css/[name].[hash].css' : 'assets/css/[name].css',
     chunkFilename: isProd ? 'assets/css/[id].[hash].css' : 'assets/css/[id].css',
   }),
-  new CopyWebpackPlugin({
-    patterns: [
-      { from: 'src/assets/images', to: 'images' }
-    ],
-  }),
+  new ForkTsCheckerWebpackPlugin()
 ];
 
 if (isProd) {
